@@ -76,6 +76,10 @@ tasks {
         from(asciidoctor.get().outputDir) {
             into("src/main/resources/static/docs")
         }
+        copy {
+            from("build/docs/asciidoc/api.html")
+            into("src/main/resources/static/docs")
+        }
     }
 
     bootJar {
