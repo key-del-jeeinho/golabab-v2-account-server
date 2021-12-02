@@ -1,0 +1,32 @@
+package io.github.key_del_jeeinho.golabab_v2.account_server.domain.account.service;
+
+import io.github.key_del_jeeinho.golabab_v2.account_server.domain.account.entity.AccountEntity;
+import io.github.key_del_jeeinho.golabab_v2.account_server.domain.account.repository.AccountRepository;
+import io.github.key_del_jeeinho.golabab_v2.rosetta.account.AccountDto;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+
+@Service
+@RequiredArgsConstructor
+public class AccountServiceImpl implements AccountService{
+    private final AccountRepository accountRepository;
+
+    @Override
+    public AccountDto addAccount(AccountDto account) {
+        AccountEntity accountEntity = AccountEntity.builder()
+                .id(account.id())
+                .email(account.email())
+                .role(account.role())
+                .discordId(account.discordId())
+                .build();
+
+        AccountEntity entity = accountRepository.save(accountEntity);
+
+        return new AccountDto(
+                entity.getId(),
+                entity.getEmail(),
+                entity.getRole(),
+                entity.getDiscordId()
+        );
+    }
+}
