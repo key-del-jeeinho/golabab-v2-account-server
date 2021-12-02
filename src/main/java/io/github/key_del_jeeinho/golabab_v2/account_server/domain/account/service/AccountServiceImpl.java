@@ -18,20 +18,9 @@ public class AccountServiceImpl implements AccountService{
         if(accountRepository.existsByDiscordId(account.discordId())) throw new DuplicateAccountException(Reason.DUPLICATE_DISCORD_ID);
         if(accountRepository.existsByEmail(account.email())) throw new DuplicateAccountException(Reason.DUPLICATE_EMAIL);
 
-        AccountEntity accountEntity = AccountEntity.builder()
-                .id(account.id())
-                .email(account.email())
-                .role(account.role())
-                .discordId(account.discordId())
-                .build();
-
+        AccountEntity accountEntity = AccountEntity.of(account);
         AccountEntity entity = accountRepository.save(accountEntity);
 
-        return new AccountDto(
-                entity.getId(),
-                entity.getEmail(),
-                entity.getRole(),
-                entity.getDiscordId()
-        );
+        return entity.toDto();
     }
 }

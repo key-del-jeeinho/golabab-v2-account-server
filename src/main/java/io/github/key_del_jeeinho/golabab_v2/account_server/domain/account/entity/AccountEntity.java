@@ -1,5 +1,6 @@
 package io.github.key_del_jeeinho.golabab_v2.account_server.domain.account.entity;
 
+import io.github.key_del_jeeinho.golabab_v2.rosetta.account.AccountDto;
 import io.github.key_del_jeeinho.golabab_v2.rosetta.account.Role;
 import lombok.*;
 
@@ -24,4 +25,17 @@ public class AccountEntity {
     private Role role;
     @NotNull
     private long discordId;
+
+    public static AccountEntity of(AccountDto dto) {
+        return AccountEntity.builder()
+                .id(dto.id())
+                .email(dto.email())
+                .role(dto.role())
+                .discordId(dto.discordId())
+                .build();
+    }
+
+    public AccountDto toDto() {
+        return new AccountDto(id, email, role, discordId);
+    }
 }
