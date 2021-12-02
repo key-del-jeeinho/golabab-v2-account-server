@@ -84,4 +84,30 @@ class AccountServiceTest extends Specification {
         -1 | 937L | "ab.c" | Role.DEVELOPER | 495072214L
 
     }
+    def "AccountService 의 addAccount 메서드에 대한 Negative Test - 이메일이 중복되었을 경우"() {
+        given:
+        AccountDto 계정 = new AccountDto(계정id, 이메일, 역할, 디스코드id)
+
+        accountRepository = Mock(AccountRepository)
+        accountRepository.save(new AccountEntity(계정id, 이메일, 역할, 디스코드id))
+                >> new AccountEntity(결과값_계정id, 이메일, 역할, 디스코드id)
+        accountRepository.existsByDiscordId(디스코드id) >> false
+        accountRepository.existsByEmail(이메일) >> true
+
+        accountService = new AccountServiceImpl(accountRepository)
+
+        when:
+        accountService.addAccount(계정)
+        then:
+        def e = thrown(DuplicateAccountException.class)
+        e.getReason() == Reason.DUPLICATE_EMAIL
+        where:
+        계정id | 결과값_계정id | 이메일 | 역할 | 디스코드id
+        -1 | 173L | "s20072@gsm.hs.kr" | Role.DEVELOPER | 23490234L
+        -1 | 308L | "golabab@gmail.com" | Role.ADMIN | 4231444L
+        -1 | 252L | "@gsm.hs.kr" | Role.USER | 176390L
+        -1 | 486L | "gsm.hs.kr" | Role.OPERATOR | 309542L
+        -1 | 937L | "ab.c" | Role.DEVELOPER | 495072214L
+
+    }
 }

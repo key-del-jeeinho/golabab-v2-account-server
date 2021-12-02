@@ -16,6 +16,7 @@ public class AccountServiceImpl implements AccountService{
     @Override
     public AccountDto addAccount(AccountDto account) {
         if(accountRepository.existsByDiscordId(account.discordId())) throw new DuplicateAccountException(Reason.DUPLICATE_DISCORD_ID);
+        if(accountRepository.existsByEmail(account.email())) throw new DuplicateAccountException(Reason.DUPLICATE_EMAIL);
 
         AccountEntity accountEntity = AccountEntity.builder()
                 .id(account.id())
