@@ -1,15 +1,17 @@
 package io.github.key_del_jeeinho.golabab_v2.account_server.account.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.github.key_del_jeeinho.golabab_v2.account_server.domain.account.controller.AccountController;
+import io.github.key_del_jeeinho.golabab_v2.account_server.domain.account.repository.AccountRepository;
 import io.github.key_del_jeeinho.golabab_v2.rosetta.account.AccountDto;
 import io.github.key_del_jeeinho.golabab_v2.rosetta.account.Role;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.RestDocumentationExtension;
 import org.springframework.restdocs.payload.JsonFieldType;
@@ -24,13 +26,21 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @ExtendWith({RestDocumentationExtension.class, SpringExtension.class})
-@WebMvcTest(AccountController.class)
+@SpringBootTest
 @AutoConfigureRestDocs
+@AutoConfigureMockMvc
 public class AccountControllerTest {
     @Autowired
-    private MockMvc mockMvc;
+    private AccountRepository accountRepository;
     @Autowired
     private ObjectMapper objectMapper;
+    @Autowired
+    private MockMvc mockMvc;
+
+    @BeforeEach
+    public void setUp() {
+        accountRepository.deleteAll();
+    }
 
     @Test
     @DisplayName("계정 추가")
@@ -40,9 +50,8 @@ public class AccountControllerTest {
 
         mockMvc.perform(
                 put("/api/v1/account-api/account").content(body)
-                        .contentType(MediaType.APPLICATION_JSON))
-
-                .andExpect(status().isOk())
+                        .contentType(MediaType.APPLICATION_JSON)
+                ).andExpect(status().isOk())
                 .andExpect(jsonPath("$.email").value(account.email()))
                 .andExpect(jsonPath("$.role").value(account.role().toString()))
                 .andExpect(jsonPath("$.discordId").value(account.discordId()))
@@ -55,13 +64,13 @@ public class AccountControllerTest {
                                 fieldWithPath("id").description("-").type(JsonFieldType.NUMBER),
                                 fieldWithPath("email").description("추가하려는 계정의 이메일").type(JsonFieldType.STRING),
                                 fieldWithPath("role").description("추가하려는 계정의 역할").type(JsonFieldType.STRING),
-                                fieldWithPath("discordId").description("추가하려는 계정의 디스코드 아이디").type(JsonFieldType.NUMBER)
+                                fieldWithPath("discordId").description("추가하려는 계정의 디스코드 ID").type(JsonFieldType.NUMBER)
                         ),
                         responseFields(
                                 fieldWithPath("id").description("추가한 계정의 ID").type(JsonFieldType.NUMBER),
                                 fieldWithPath("email").description("추가한 계정의 이메일").type(JsonFieldType.STRING),
                                 fieldWithPath("role").description("추가한 계정의 역할").type(JsonFieldType.STRING),
-                                fieldWithPath("discordId").description("추가한 계정의 디스코드 아이디").type(JsonFieldType.NUMBER)
+                                fieldWithPath("discordId").description("추가한 계정의 디스코드 ID").type(JsonFieldType.NUMBER)
                         )
                 ));
     }

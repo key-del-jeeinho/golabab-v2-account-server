@@ -1,9 +1,0 @@
-server:
-  address: 127.0.0.1
-  port: 8080
-spring:
-  datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/golabab_v2_account_server?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
-    username: root
-    password: sogonsogon0129@
