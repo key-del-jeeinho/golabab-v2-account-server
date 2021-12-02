@@ -86,9 +86,6 @@ tasks {
         )
         inputs.dir(snippetsDir)
 
-        doFirst {
-            delete("src/main/resources/static/docs")
-        }
     }
 
     register<Copy>("copyDocument") {

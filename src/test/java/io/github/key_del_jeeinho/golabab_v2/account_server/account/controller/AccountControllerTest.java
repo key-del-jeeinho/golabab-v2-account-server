@@ -12,13 +12,13 @@ import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDoc
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.RestDocumentationExtension;
+import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 
-import static org.hamcrest.Matchers.is;
-import static org.mockito.ArgumentMatchers.anyInt;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
+import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -50,7 +50,19 @@ public class AccountControllerTest {
                 .andDo(print())
                 .andDo(document("/docs/{method-name}",
                         preprocessRequest(prettyPrint()),
-                        preprocessResponse(prettyPrint())
+                        preprocessResponse(prettyPrint()),
+                        requestFields(
+                                fieldWithPath("id").description("-").type(JsonFieldType.NUMBER),
+                                fieldWithPath("email").description("추가하려는 계정의 이메일").type(JsonFieldType.STRING),
+                                fieldWithPath("role").description("추가하려는 계정의 역할").type(JsonFieldType.STRING),
+                                fieldWithPath("discordId").description("추가하려는 계정의 디스코드 아이디").type(JsonFieldType.NUMBER)
+                        ),
+                        responseFields(
+                                fieldWithPath("id").description("추가한 계정의 ID").type(JsonFieldType.NUMBER),
+                                fieldWithPath("email").description("추가한 계정의 이메일").type(JsonFieldType.STRING),
+                                fieldWithPath("role").description("추가한 계정의 역할").type(JsonFieldType.STRING),
+                                fieldWithPath("discordId").description("추가한 계정의 디스코드 아이디").type(JsonFieldType.NUMBER)
+                        )
                 ));
     }
 }
