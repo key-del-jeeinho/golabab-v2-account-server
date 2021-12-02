@@ -97,7 +97,7 @@ tasks {
         }
         copy {
             from("build/docs/asciidoc/api.html")
-            into("src/main/resources/static/docs")
+            into("src/docs")
         }
     }
 
