@@ -3,6 +3,7 @@ package io.github.key_del_jeeinho.golabab_v2.account_server.account.service
 import io.github.key_del_jeeinho.golabab_v2.account_server.domain.account.entity.AccountEntity
 import io.github.key_del_jeeinho.golabab_v2.account_server.domain.account.exception.DuplicateAccountException
 import io.github.key_del_jeeinho.golabab_v2.account_server.domain.account.exception.DuplicateAccountException.Reason
+import io.github.key_del_jeeinho.golabab_v2.account_server.domain.account.exception.UnknownAccountException
 import io.github.key_del_jeeinho.golabab_v2.account_server.domain.account.repository.AccountRepository
 import io.github.key_del_jeeinho.golabab_v2.account_server.domain.account.service.AccountServiceImpl
 import io.github.key_del_jeeinho.golabab_v2.rosetta.account.AccountDto
@@ -17,6 +18,61 @@ import io.github.key_del_jeeinho.golabab_v2.rosetta.account.Role
 class AccountServiceTest extends Specification {
     AccountServiceImpl accountService
     AccountRepository accountRepository
+    /* GetAccount 테스트
+    AccountService 의 getAccount 메서드는 인자로 받은 accountId 를 가지는 AccountEntity 를 DB에서 조회한 뒤 AccountDto에 담아 반환한다.
+    - 조회된 AccountEntity 가 존재하지 않으면, AccountNotFoundException 예외를 던진다.
+    - 조회된 AccountEntity 가 존재하면, AccountDto 에 정보를 담아 반환한다.
+     */
+    def "AccountService 의 getAccount 메서드에 대한 Positive Test"() {
+        given:
+        accountRepository = Mock(AccountRepository)
+        accountRepository.getById(계정id)
+                >> new AccountEntity(계정id, 이메일, 역할, 디스코드id)
+        accountRepository.existsById(계정id) >> true;
+
+        accountService = new AccountServiceImpl(accountRepository)
+
+        when:
+        AccountDto 결과값 = accountService.getAccount(계정id)
+
+        then:
+        결과값.id() == 계정id
+        결과값.email() == 이메일
+        결과값.role() == 역할
+        결과값.discordId() == 디스코드id
+
+        where:
+        계정id | 이메일 | 역할 | 디스코드id
+        21659 | "s20072@gsm.hs.kr" | Role.DEVELOPER | 23490234L
+        34651 | "golabab@gmail.com" | Role.ADMIN | 4231444L
+        20341 | "@gsm.hs.kr" | Role.USER | 176390L
+        14806 | "gsm.hs.kr" | Role.OPERATOR | 309542L
+        92347 | "ab.c" | Role.DEVELOPER | 495072214L
+    }
+    def "AccountService 의 getAccount 메서드에 대한 Negative Test - 계정ID를 찾을 수 없을 경우"() {
+        given:
+        accountRepository = Mock(AccountRepository)
+        accountRepository.getById(계정id)
+                >> new AccountEntity(계정id, 이메일, 역할, 디스코드id)
+        accountRepository.existsById(계정id) >> false;
+
+        accountService = new AccountServiceImpl(accountRepository)
+
+        when:
+        accountService.getAccount(계정id)
+
+        then:
+        def e = thrown(UnknownAccountException.class)
+        e.getId() == 계정id
+
+        where:
+        계정id | 이메일 | 역할 | 디스코드id
+        21659 | "s20072@gsm.hs.kr" | Role.DEVELOPER | 23490234L
+        34651 | "golabab@gmail.com" | Role.ADMIN | 4231444L
+        20341 | "@gsm.hs.kr" | Role.USER | 176390L
+        14806 | "gsm.hs.kr" | Role.OPERATOR | 309542L
+        92347 | "ab.c" | Role.DEVELOPER | 495072214L
+    }
 
     /* AddAccount 테스트
     AccountService 의 addAccount 메서드는 인자로 받은 AccountDto 를 Database 에 저장하고, 저장한 값을 AccountDto 에 담아 반환한다.
@@ -27,6 +83,7 @@ class AccountServiceTest extends Specification {
     - 메서드의 반환값은 인자로 받은 AccountDto 에서 id 를 DB에 저장한 row 의 id로 수정한 값 이어야 한다.
     - 이때, id 는 long 범위 내의 양수이다.
     - 또한, id, email, discordId 는 중복되지 않아야 한다. (ID 는 자동으로 생성되므로, Service 로직에서 검사하지 않는다.)
+    - 만약 email, discord 중 하나 이상이 중복되었을 경우, DuplicateAccountException 예외를 던진다.
      */
     def "AccountService 의 addAccount 메서드에 대한 Positive Test"() {
         given:
