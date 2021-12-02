@@ -1,0 +1,50 @@
+= 골라밥 V2 Account API Document
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 3
+:sectlinks:
+
+[[introduction]]
+== 소개
+
+Golabab V2 의 계정관리를 위한 Restful API 입니다.
+
+[[common]]
+== 공통 사항
+
+API PORT는 8080 입니다.
+
+[[account-api]]
+계정관리 기능을 수행하는 api 입니다.
+
+root path : api/v1/account
+
+
+[[add-account]]
+== api/v1/account-api
+계정 관리에 대한 기본적인 기능을 제공하는 rest api 입니다.
+
+=== add account
+
+==== Request
+
+CURL:
+include::{snippets}/docs/add-account/curl-request.adoc[]
+
+Request Parameters:
+include::{snippets}/docs/add-account/request-body.adoc[]
+include::{snippets}/docs/add-account/request-fields.adoc[]
+
+Request HTTP Example:
+include::{snippets}/docs/add-account/http-request.adoc[]
+
+==== Response
+
+Response Body:
+include::{snippets}/docs/add-account/response-body.adoc[]
+include::{snippets}/docs/add-account/response-fields.adoc[]
+
+Response HTTP Example:
+include::{snippets}/docs/add-account/http-response.adoc[]
