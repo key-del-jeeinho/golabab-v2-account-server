@@ -6,4 +6,6 @@ public interface AccountService {
     AccountDto addAccount(AccountDto account);
 
     AccountDto getAccount(Long id);
+
+    AccountDto editAccount(Long id, AccountDto account);
 }

@@ -31,4 +31,12 @@ public class AccountController {
         //조회한 계정의 정보를 반환한다.
         return ResponseEntity.ok(body);
     }
+
+    @PatchMapping("/account/{id}")
+    public ResponseEntity<AccountDto> editAccount(@PathVariable Long id, @RequestBody AccountDto account) {
+        //인자로 받은 id와 AccountDto 를 통해 계정을 수정한다.
+        AccountDto body = accountService.editAccount(id, account);
+        //수정한 계정의 정보를 반환한다.
+        return ResponseEntity.ok(body);
+    }
 }

@@ -40,16 +40,20 @@ public class AccountControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
+    private AccountDto account;
+
     @BeforeAll
     public static void setUpAll() throws InterruptedException {
         ConsoleManager.sendWarningMessage(
                 "해당 테스트는 DB를 전체 초기화하는 코드를 포함하고 있습니다! 실제 DB사용환경이라면 당장 stop 버튼을 눌러주세요!",
-                10);
+                10
+        );
     }
 
     @BeforeEach
     public void setUp() {
         accountRepository.deleteAll();
+        account = new AccountDto(-1, "a@bc.de", Role.ADMIN, 1000L);
     }
 
     @AfterEach
@@ -60,7 +64,6 @@ public class AccountControllerTest {
     @Test
     @DisplayName("계정 추가")
     public void addAccount() throws Exception {
-        AccountDto account = new AccountDto(-1, "a@bc.de", Role.ADMIN, 1000L);
         String body = objectMapper.writeValueAsString(account);
 
         mockMvc.perform(
@@ -93,7 +96,6 @@ public class AccountControllerTest {
     @Test
     @DisplayName("계정 조회")
     public void getAccount() throws Exception {
-        AccountDto account = new AccountDto(-1, "a@bc.de", Role.ADMIN, 1000L);
         long id = accountRepository.save(AccountEntity.of(account)).getId();
 
         mockMvc.perform(
@@ -119,5 +121,40 @@ public class AccountControllerTest {
                                 fieldWithPath("discordId").description("추가한 계정의 디스코드 ID").type(JsonFieldType.NUMBER)
                         )
                 ));
+    }
+
+    @Test
+    @DisplayName("계정 수정")
+    public void editAccount() throws Exception {
+        long id = accountRepository.save(AccountEntity.of(account)).getId();
+        AccountDto editedAccount = new AccountDto(id, "hello@gsm.hs.kr", Role.USER, account.discordId());
+        String body = objectMapper.writeValueAsString(editedAccount);
+
+        mockMvc.perform(
+                        RestDocumentationRequestBuilders.patch("/api/v1/account-api/account/{id}", id).content(body)
+                                .contentType(MediaType.APPLICATION_JSON)
+                ).andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(id))
+                .andExpect(jsonPath("$.email").value(editedAccount.email()))
+                .andExpect(jsonPath("$.role").value(editedAccount.role().name()))
+                .andExpect(jsonPath("$.discordId").value(editedAccount.discordId()))
+
+                .andDo(print())
+                .andDo(document("/docs/{method-name}",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint()),
+
+                        pathParameters(
+                                parameterWithName("id").description("수정하려는 계정의 ID")
+                        ),
+                        responseFields(
+                                fieldWithPath("id").description("수정한 계정의 ID").type(JsonFieldType.NUMBER),
+                                fieldWithPath("email").description("수정한 계정의 이메일").type(JsonFieldType.STRING),
+                                fieldWithPath("role").description("수정한 계정의 역할").type(JsonFieldType.STRING),
+                                fieldWithPath("discordId").description("수정한 계정의 디스코드 ID").type(JsonFieldType.NUMBER)
+                        )
+                ));
+
+
     }
 }

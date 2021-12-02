@@ -39,4 +39,17 @@ public class AccountServiceImpl implements AccountService{
         //response 를 AccountDto 로 Convert 하여 반환한다.
         return response.toDto();
     }
+
+    @Override
+    public AccountDto editAccount(Long id, AccountDto account) {
+        if(!accountRepository.existsById(id)) throw new UnknownAccountException("계정을 찾을 수 없습니다!", id);
+
+        //인자로 받은 AccountDto 를 AccountEntity 로 Convert 한다.
+        AccountEntity data = AccountEntity.of(account);
+        //Convert 한 AccountEntity(data) 를 DB에 저장한다.
+        // 기존에 존재하는 id(primary key) 를 이용하여, 저장하였기에, 기존 data가 수정된다
+        AccountEntity response = accountRepository.save(data);
+        //response 를 AccountDto 로 Convert 하여 반환한다.
+        return response.toDto();
+    }
 }

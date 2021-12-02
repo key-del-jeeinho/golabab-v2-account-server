@@ -18,61 +18,6 @@ import io.github.key_del_jeeinho.golabab_v2.rosetta.account.Role
 class AccountServiceTest extends Specification {
     AccountServiceImpl accountService
     AccountRepository accountRepository
-    /* GetAccount 테스트
-    AccountService 의 getAccount 메서드는 인자로 받은 accountId 를 가지는 AccountEntity 를 DB에서 조회한 뒤 AccountDto에 담아 반환한다.
-    - 조회된 AccountEntity 가 존재하지 않으면, AccountNotFoundException 예외를 던진다.
-    - 조회된 AccountEntity 가 존재하면, AccountDto 에 정보를 담아 반환한다.
-     */
-    def "AccountService 의 getAccount 메서드에 대한 Positive Test"() {
-        given:
-        accountRepository = Mock(AccountRepository)
-        accountRepository.getById(계정id)
-                >> new AccountEntity(계정id, 이메일, 역할, 디스코드id)
-        accountRepository.existsById(계정id) >> true;
-
-        accountService = new AccountServiceImpl(accountRepository)
-
-        when:
-        AccountDto 결과값 = accountService.getAccount(계정id)
-
-        then:
-        결과값.id() == 계정id
-        결과값.email() == 이메일
-        결과값.role() == 역할
-        결과값.discordId() == 디스코드id
-
-        where:
-        계정id | 이메일 | 역할 | 디스코드id
-        21659 | "s20072@gsm.hs.kr" | Role.DEVELOPER | 23490234L
-        34651 | "golabab@gmail.com" | Role.ADMIN | 4231444L
-        20341 | "@gsm.hs.kr" | Role.USER | 176390L
-        14806 | "gsm.hs.kr" | Role.OPERATOR | 309542L
-        92347 | "ab.c" | Role.DEVELOPER | 495072214L
-    }
-    def "AccountService 의 getAccount 메서드에 대한 Negative Test - 계정ID를 찾을 수 없을 경우"() {
-        given:
-        accountRepository = Mock(AccountRepository)
-        accountRepository.getById(계정id)
-                >> new AccountEntity(계정id, 이메일, 역할, 디스코드id)
-        accountRepository.existsById(계정id) >> false;
-
-        accountService = new AccountServiceImpl(accountRepository)
-
-        when:
-        accountService.getAccount(계정id)
-
-        then:
-        def e = thrown(UnknownAccountException.class)
-        e.getId() == 계정id
-
-        where:
-        계정id | 이메일 | 역할 | 디스코드id
-        21659 | "s20072@gsm.hs.kr" | Role.DEVELOPER | 23490234L
-        34651 | "golabab@gmail.com" | Role.ADMIN | 4231444L
-        20341 | "@gsm.hs.kr" | Role.USER | 176390L
-        14806 | "gsm.hs.kr" | Role.OPERATOR | 309542L
-        92347 | "ab.c" | Role.DEVELOPER | 495072214L
-    }
 
     /* AddAccount 테스트
     AccountService 의 addAccount 메서드는 인자로 받은 AccountDto 를 Database 에 저장하고, 저장한 값을 AccountDto 에 담아 반환한다.
@@ -90,10 +35,10 @@ class AccountServiceTest extends Specification {
         AccountDto 계정 = new AccountDto(계정id, 이메일, 역할, 디스코드id)
 
         accountRepository = Mock(AccountRepository)
-        accountRepository.save(new AccountEntity(계정id, 이메일, 역할, 디스코드id))
+        1 * accountRepository.save(new AccountEntity(계정id, 이메일, 역할, 디스코드id))
                 >> new AccountEntity(결과값_계정id, 이메일, 역할, 디스코드id)
-        accountRepository.existsByDiscordId(디스코드id) >> false
-        accountRepository.existsByEmail(이메일) >> false
+        1 * accountRepository.existsByDiscordId(디스코드id) >> false
+        1 * accountRepository.existsByEmail(이메일) >> false
 
         accountService = new AccountServiceImpl(accountRepository)
 
@@ -120,9 +65,9 @@ class AccountServiceTest extends Specification {
         AccountDto 계정 = new AccountDto(계정id, 이메일, 역할, 디스코드id)
 
         accountRepository = Mock(AccountRepository)
-        accountRepository.save(new AccountEntity(계정id, 이메일, 역할, 디스코드id))
+        0 * accountRepository.save(new AccountEntity(계정id, 이메일, 역할, 디스코드id))
                 >> new AccountEntity(결과값_계정id, 이메일, 역할, 디스코드id)
-        accountRepository.existsByDiscordId(디스코드id) >> true
+        1 * accountRepository.existsByDiscordId(디스코드id) >> true
         accountRepository.existsByEmail(이메일) >> false
 
         accountService = new AccountServiceImpl(accountRepository)
@@ -146,10 +91,10 @@ class AccountServiceTest extends Specification {
         AccountDto 계정 = new AccountDto(계정id, 이메일, 역할, 디스코드id)
 
         accountRepository = Mock(AccountRepository)
-        accountRepository.save(new AccountEntity(계정id, 이메일, 역할, 디스코드id))
+        0 * accountRepository.save(new AccountEntity(계정id, 이메일, 역할, 디스코드id))
                 >> new AccountEntity(결과값_계정id, 이메일, 역할, 디스코드id)
         accountRepository.existsByDiscordId(디스코드id) >> false
-        accountRepository.existsByEmail(이메일) >> true
+        1 * accountRepository.existsByEmail(이메일) >> true
 
         accountService = new AccountServiceImpl(accountRepository)
 
@@ -167,4 +112,121 @@ class AccountServiceTest extends Specification {
         -1 | 937L | "ab.c" | Role.DEVELOPER | 495072214L
 
     }
+
+    /* GetAccount 테스트
+    AccountService 의 getAccount 메서드는 인자로 받은 accountId 와 id가 일치하는 AccountEntity 를 DB에서 조회한 뒤 AccountDto에 담아 반환한다.
+    - id가 일치하는 AccountEntity 가 존재하지 않으면, AccountNotFoundException 예외를 던진다.
+    - id가 일치하는 AccountEntity 가 존재하면, AccountDto 에 정보를 담아 반환한다.
+     */
+    def "AccountService 의 getAccount 메서드에 대한 Positive Test"() {
+        given:
+        accountRepository = Mock(AccountRepository)
+        1 * accountRepository.getById(계정id)
+                >> new AccountEntity(계정id, 이메일, 역할, 디스코드id)
+        1 * accountRepository.existsById(계정id) >> true;
+
+        accountService = new AccountServiceImpl(accountRepository)
+
+        when:
+        AccountDto 결과값 = accountService.getAccount(계정id)
+
+        then:
+        결과값.id() == 계정id
+        결과값.email() == 이메일
+        결과값.role() == 역할
+        결과값.discordId() == 디스코드id
+
+        where:
+        계정id | 이메일 | 역할 | 디스코드id
+        21659 | "s20072@gsm.hs.kr" | Role.DEVELOPER | 23490234L
+        34651 | "golabab@gmail.com" | Role.ADMIN | 4231444L
+        20341 | "@gsm.hs.kr" | Role.USER | 176390L
+        14806 | "gsm.hs.kr" | Role.OPERATOR | 309542L
+        92347 | "ab.c" | Role.DEVELOPER | 495072214L
+    }
+    def "AccountService 의 getAccount 메서드에 대한 Negative Test - 계정ID를 찾을 수 없을 경우"() {
+        given:
+        accountRepository = Mock(AccountRepository)
+        0 * accountRepository.getById(계정id)
+                >> new AccountEntity(계정id, 이메일, 역할, 디스코드id)
+        1 * accountRepository.existsById(계정id) >> false;
+
+        accountService = new AccountServiceImpl(accountRepository)
+
+        when:
+        accountService.getAccount(계정id)
+
+        then:
+        def e = thrown(UnknownAccountException.class)
+        e.getId() == 계정id
+
+        where:
+        계정id | 이메일 | 역할 | 디스코드id
+        21659 | "s20072@gsm.hs.kr" | Role.DEVELOPER | 23490234L
+        34651 | "golabab@gmail.com" | Role.ADMIN | 4231444L
+        20341 | "@gsm.hs.kr" | Role.USER | 176390L
+        14806 | "gsm.hs.kr" | Role.OPERATOR | 309542L
+        92347 | "ab.c" | Role.DEVELOPER | 495072214L
+    }
+
+    /* Edit Account 테스트
+    AccountServiceImpl 의 editAccount 메서드는 인자로 받은 accountId 와 id가 일치하는 AccountEntity 를 DB 에서 조회한 뒤,
+    인자로받은 AccountDto 의 정보를 통해 해당 Entity 를 수정한다.
+    - id가 일치하는 AccountEntity 가 존재하지 않으면, UnknownAccountException 예외를 던진다.
+    - id가 일치하는 AccountEntity 가 존재하면, 인자로 받은 AccountDto 의 정보를 기준으로 해당 Entity 를 수정하여 저장한다.
+    - 이후, 수정된 Entity 를 AccountDto 로 Convert 하여 반환한다.
+     */
+    def "AccountService 의 editAccount 메서드에 대한 Positive Test"() {
+        given:
+        AccountDto 수정된_계정 = new AccountDto(계정id, 이메일, 역할, 디스코드id)
+        accountRepository = Mock(AccountRepository)
+        1 * accountRepository.save(AccountEntity.of(수정된_계정))
+                >> AccountEntity.of(수정된_계정)
+        1 * accountRepository.existsById(계정id) >> true
+
+        accountService = new AccountServiceImpl(accountRepository)
+
+        when:
+        AccountDto 결과값 = accountService.editAccount(계정id, 수정된_계정)
+
+        then:
+        결과값.id() == 수정된_계정.id()
+        결과값.email() == 수정된_계정.email()
+        결과값.role() == 수정된_계정.role()
+        결과값.discordId() == 수정된_계정.discordId()
+
+        where:
+        계정id | 이메일 | 역할 | 디스코드id
+        21659L | "s20072@gsm.hs.kr" | Role.DEVELOPER | 23490234L
+        34651L | "golabab@gmail.com" | Role.ADMIN | 4231444L
+        20341L | "@gsm.hs.kr" | Role.USER | 176390L
+        14806L | "gsm.hs.kr" | Role.OPERATOR | 309542L
+        92347L | "ab.c" | Role.DEVELOPER | 495072214L
+    }
+    def "AccountService 의 editAccount 메서드에 대한 Negative Test - 계정ID를 찾을 수 없을 경우"() {
+        given:
+        AccountDto 수정된_계정 = new AccountDto(계정id, 이메일, 역할, 디스코드id)
+        accountRepository = Mock(AccountRepository)
+        0 * accountRepository.save(AccountEntity.of(수정된_계정))
+                >> AccountEntity.of(수정된_계정)
+        1 * accountRepository.existsById(계정id) >> false
+
+        accountService = new AccountServiceImpl(accountRepository)
+
+        when:
+        accountService.editAccount(계정id, 수정된_계정)
+
+        then:
+        def e = thrown(UnknownAccountException)
+        e.getId() == 수정된_계정.id()
+
+        where:
+        계정id | 이메일 | 역할 | 디스코드id
+        21659L | "s20072@gsm.hs.kr" | Role.DEVELOPER | 23490234L
+        34651L | "golabab@gmail.com" | Role.ADMIN | 4231444L
+        20341L | "@gsm.hs.kr" | Role.USER | 176390L
+        14806L | "gsm.hs.kr" | Role.OPERATOR | 309542L
+        92347L | "ab.c" | Role.DEVELOPER | 495072214L
+    }
+
 }
