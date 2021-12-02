@@ -18,7 +18,7 @@ class AccountServiceTest extends Specification {
     AccountServiceImpl accountService
     AccountRepository accountRepository
 
-    /*
+    /* AddAccount 테스트
     AccountService 의 addAccount 메서드는 인자로 받은 AccountDto 를 Database 에 저장하고, 저장한 값을 AccountDto 에 담아 반환한다.
     이때, 저장하는 값은 AccountDto 의 id, name, email, discordId, role 을 가지고 있는 table 이다.
     해당 로직이 정상작동한다면 메서드 호출 후 다음과 같은 변동사항이 발생해야한다.
