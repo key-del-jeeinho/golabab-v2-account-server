@@ -1,6 +1,8 @@
 package io.github.key_del_jeeinho.golabab_v2.account_server.domain.account.service;
 
 import io.github.key_del_jeeinho.golabab_v2.account_server.domain.account.entity.AccountEntity;
+import io.github.key_del_jeeinho.golabab_v2.account_server.domain.account.exception.DuplicateAccountException;
+import io.github.key_del_jeeinho.golabab_v2.account_server.domain.account.exception.DuplicateAccountException.Reason;
 import io.github.key_del_jeeinho.golabab_v2.account_server.domain.account.repository.AccountRepository;
 import io.github.key_del_jeeinho.golabab_v2.rosetta.account.AccountDto;
 import lombok.RequiredArgsConstructor;
@@ -13,6 +15,8 @@ public class AccountServiceImpl implements AccountService{
 
     @Override
     public AccountDto addAccount(AccountDto account) {
+        if(accountRepository.existsByDiscordId(account.discordId())) throw new DuplicateAccountException(Reason.DUPLICATE_DISCORD_ID);
+
         AccountEntity accountEntity = AccountEntity.builder()
                 .id(account.id())
                 .email(account.email())
