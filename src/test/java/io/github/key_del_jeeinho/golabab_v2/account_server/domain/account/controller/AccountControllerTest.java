@@ -1,7 +1,7 @@
-package io.github.key_del_jeeinho.golabab_v2.account_server.account.controller;
+package io.github.key_del_jeeinho.golabab_v2.account_server.domain.account.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.github.key_del_jeeinho.golabab_v2.account_server.ConsoleManager;
+import tools.console.ConsoleManager;
 import io.github.key_del_jeeinho.golabab_v2.account_server.domain.account.entity.AccountEntity;
 import io.github.key_del_jeeinho.golabab_v2.account_server.domain.account.repository.AccountRepository;
 import io.github.key_del_jeeinho.golabab_v2.rosetta.account.AccountDto;
@@ -67,7 +67,7 @@ public class AccountControllerTest {
         String body = objectMapper.writeValueAsString(account);
 
         mockMvc.perform(
-                MockMvcRequestBuilders.put("/api/v1/account-api/account").content(body)
+                MockMvcRequestBuilders.post("/api/v1/account-api/account").content(body)
                         .contentType(MediaType.APPLICATION_JSON)
                 ).andExpect(status().isOk())
                 .andExpect(jsonPath("$.email").value(account.email()))

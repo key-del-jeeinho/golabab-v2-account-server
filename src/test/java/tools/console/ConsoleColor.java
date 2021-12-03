@@ -1,4 +1,4 @@
-package io.github.key_del_jeeinho.golabab_v2.account_server;
+package tools.console;
 
 public enum ConsoleColor {
     //Color end string, color reset

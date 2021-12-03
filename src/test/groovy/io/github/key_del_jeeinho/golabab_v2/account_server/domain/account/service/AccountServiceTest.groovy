@@ -1,11 +1,10 @@
-package io.github.key_del_jeeinho.golabab_v2.account_server.account.service
+package io.github.key_del_jeeinho.golabab_v2.account_server.domain.account.service
 
 import io.github.key_del_jeeinho.golabab_v2.account_server.domain.account.entity.AccountEntity
 import io.github.key_del_jeeinho.golabab_v2.account_server.domain.account.exception.DuplicateAccountException
 import io.github.key_del_jeeinho.golabab_v2.account_server.domain.account.exception.DuplicateAccountException.Reason
 import io.github.key_del_jeeinho.golabab_v2.account_server.domain.account.exception.UnknownAccountException
 import io.github.key_del_jeeinho.golabab_v2.account_server.domain.account.repository.AccountRepository
-import io.github.key_del_jeeinho.golabab_v2.account_server.domain.account.service.AccountServiceImpl
 import io.github.key_del_jeeinho.golabab_v2.rosetta.account.AccountDto
 import org.junit.jupiter.api.extension.ExtendWith
 import org.mockito.junit.jupiter.MockitoExtension
@@ -123,7 +122,7 @@ class AccountServiceTest extends Specification {
         accountRepository = Mock(AccountRepository)
         1 * accountRepository.getById(계정id)
                 >> new AccountEntity(계정id, 이메일, 역할, 디스코드id)
-        1 * accountRepository.existsById(계정id) >> true;
+        1 * accountRepository.existsById(계정id) >> true
 
         accountService = new AccountServiceImpl(accountRepository)
 
@@ -149,7 +148,7 @@ class AccountServiceTest extends Specification {
         accountRepository = Mock(AccountRepository)
         0 * accountRepository.getById(계정id)
                 >> new AccountEntity(계정id, 이메일, 역할, 디스코드id)
-        1 * accountRepository.existsById(계정id) >> false;
+        1 * accountRepository.existsById(계정id) >> false
 
         accountService = new AccountServiceImpl(accountRepository)
 

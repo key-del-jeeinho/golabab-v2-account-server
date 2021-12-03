@@ -1,4 +1,4 @@
-package io.github.key_del_jeeinho.golabab_v2.account_server;
+package tools.console;
 
 public class ConsoleManager {
     public static void sendWarningMessage(String message, int seconds) throws InterruptedException {

@@ -1,6 +1,6 @@
-package io.github.key_del_jeeinho.golabab_v2.account_server.account.entity
+package io.github.key_del_jeeinho.golabab_v2.account_server.domain.account.entity
 
-import io.github.key_del_jeeinho.golabab_v2.account_server.domain.account.entity.AccountEntity
+
 import io.github.key_del_jeeinho.golabab_v2.rosetta.account.AccountDto
 import io.github.key_del_jeeinho.golabab_v2.rosetta.account.Role
 import spock.lang.Specification
@@ -14,10 +14,10 @@ class AccountEntityTest extends Specification {
      */
     def "DTO 에서 Entity 로의 변환이 제대로 일어나는지 테스트"() {
         given:
-        AccountDto dto = new AccountDto(계정id, 이메일, 역할, 디스코드id);
+        AccountDto dto = new AccountDto(계정id, 이메일, 역할, 디스코드id)
 
         when:
-        AccountEntity entity = AccountEntity.of(dto);
+        AccountEntity entity = AccountEntity.of(dto)
 
         then:
         entity.getId() == 계정id
@@ -39,7 +39,7 @@ class AccountEntityTest extends Specification {
                 .email(이메일)
                 .role(역할)
                 .discordId(디스코드id)
-                .build();
+                .build()
 
         when:
         AccountDto dto = entity.toDto()
