@@ -1,11 +1,11 @@
 package io.github.key_del_jeeinho.golabab_v2.account_server.domain.account.service
 
+import io.github.key_del_jeeinho.golabab_v2.account_server.domain.account.dto.AccountDto
 import io.github.key_del_jeeinho.golabab_v2.account_server.domain.account.entity.AccountEntity
 import io.github.key_del_jeeinho.golabab_v2.account_server.domain.account.exception.DuplicateAccountException
 import io.github.key_del_jeeinho.golabab_v2.account_server.domain.account.exception.DuplicateAccountException.Reason
 import io.github.key_del_jeeinho.golabab_v2.account_server.domain.account.exception.UnknownAccountException
 import io.github.key_del_jeeinho.golabab_v2.account_server.domain.account.repository.AccountRepository
-import io.github.key_del_jeeinho.golabab_v2.rosetta.account.AccountDto
 import org.junit.jupiter.api.extension.ExtendWith
 import org.mockito.junit.jupiter.MockitoExtension
 import org.springframework.boot.test.context.SpringBootTest
@@ -59,7 +59,7 @@ class AccountServiceTest extends Specification {
         -1 | 937L | "ab.c" | Role.DEVELOPER | 495072214L
 
     }
-    def "AccountService 의 addAccount 메서드에 대한 Negative Test - 디스코드 ID가 중복되었을 경우"() {
+    def  "AccountService 의 addAccount 메서드에 대한 Negative Test - 디스코드 ID가 중복되었을 경우"() {
         given:
         AccountDto 계정 = new AccountDto(계정id, 이메일, 역할, 디스코드id)
 

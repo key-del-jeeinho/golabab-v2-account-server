@@ -1,10 +1,12 @@
 package io.github.key_del_jeeinho.golabab_v2.account_server.domain.account.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.github.key_del_jeeinho.golabab_v2.account_server.domain.account.dto.AccountDto;
+import io.github.key_del_jeeinho.golabab_v2.rosetta.account.request.AddAccountRequest;
+import io.github.key_del_jeeinho.golabab_v2.rosetta.account.request.EditAccountRequest;
 import tools.console.ConsoleManager;
 import io.github.key_del_jeeinho.golabab_v2.account_server.domain.account.entity.AccountEntity;
 import io.github.key_del_jeeinho.golabab_v2.account_server.domain.account.repository.AccountRepository;
-import io.github.key_del_jeeinho.golabab_v2.rosetta.account.AccountDto;
 import io.github.key_del_jeeinho.golabab_v2.rosetta.account.Role;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -64,7 +66,8 @@ public class AccountControllerTest {
     @Test
     @DisplayName("계정 추가")
     public void addAccount() throws Exception {
-        String body = objectMapper.writeValueAsString(account);
+        AddAccountRequest request = new AddAccountRequest(account.email(), account.role(), account.discordId());
+        String body = objectMapper.writeValueAsString(request);
 
         mockMvc.perform(
                 MockMvcRequestBuilders.post("/api/v1/account-api/account").content(body)
@@ -79,7 +82,6 @@ public class AccountControllerTest {
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint()),
                         requestFields(
-                                fieldWithPath("id").description("-").type(JsonFieldType.NUMBER),
                                 fieldWithPath("email").description("추가하려는 계정의 이메일").type(JsonFieldType.STRING),
                                 fieldWithPath("role").description("추가하려는 계정의 역할").type(JsonFieldType.STRING),
                                 fieldWithPath("discordId").description("추가하려는 계정의 디스코드 ID").type(JsonFieldType.NUMBER)
@@ -127,17 +129,17 @@ public class AccountControllerTest {
     @DisplayName("계정 수정")
     public void editAccount() throws Exception {
         long id = accountRepository.save(AccountEntity.of(account)).getId();
-        AccountDto editedAccount = new AccountDto(id, "hello@gsm.hs.kr", Role.USER, account.discordId());
-        String body = objectMapper.writeValueAsString(editedAccount);
+        EditAccountRequest request = new EditAccountRequest("hello@gsm.hs.kr", Role.USER, account.discordId());
+        String body = objectMapper.writeValueAsString(request);
 
         mockMvc.perform(
                         RestDocumentationRequestBuilders.patch("/api/v1/account-api/account/{id}", id).content(body)
                                 .contentType(MediaType.APPLICATION_JSON)
                 ).andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(id))
-                .andExpect(jsonPath("$.email").value(editedAccount.email()))
-                .andExpect(jsonPath("$.role").value(editedAccount.role().name()))
-                .andExpect(jsonPath("$.discordId").value(editedAccount.discordId()))
+                .andExpect(jsonPath("$.email").value(request.email()))
+                .andExpect(jsonPath("$.role").value(request.role().name()))
+                .andExpect(jsonPath("$.discordId").value(request.discordId()))
 
                 .andDo(print())
                 .andDo(document("/docs/{method-name}",

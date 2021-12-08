@@ -1,6 +1,6 @@
 package io.github.key_del_jeeinho.golabab_v2.account_server.domain.account.entity;
 
-import io.github.key_del_jeeinho.golabab_v2.rosetta.account.AccountDto;
+import io.github.key_del_jeeinho.golabab_v2.account_server.domain.account.dto.AccountDto;
 import io.github.key_del_jeeinho.golabab_v2.rosetta.account.Role;
 import lombok.*;
 

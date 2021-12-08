@@ -5,7 +5,7 @@ import io.github.key_del_jeeinho.golabab_v2.account_server.domain.account.except
 import io.github.key_del_jeeinho.golabab_v2.account_server.domain.account.exception.DuplicateAccountException.Reason;
 import io.github.key_del_jeeinho.golabab_v2.account_server.domain.account.exception.UnknownAccountException;
 import io.github.key_del_jeeinho.golabab_v2.account_server.domain.account.repository.AccountRepository;
-import io.github.key_del_jeeinho.golabab_v2.rosetta.account.AccountDto;
+import io.github.key_del_jeeinho.golabab_v2.account_server.domain.account.dto.AccountDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
