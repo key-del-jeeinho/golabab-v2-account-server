@@ -8,12 +8,15 @@ import io.github.key_del_jeeinho.golabab_v2.account_server.domain.account.reposi
 import io.github.key_del_jeeinho.golabab_v2.account_server.domain.account.dto.AccountDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class AccountServiceImpl implements AccountService{
     private final AccountRepository accountRepository;
 
+    @Transactional
     @Override //DB 에 계정을 추가한다.
     public AccountDto addAccount(AccountDto account) {
         //디스코드 아이디 또는 이메일이 겹치면 예외를 던진다.
@@ -29,6 +32,7 @@ public class AccountServiceImpl implements AccountService{
         return response.toDto();
     }
 
+    @Transactional(readOnly = true)
     @Override //DB에서 아이디를 통해 계정을 조회한다.
     public AccountDto getAccount(Long id) {
         //만약, 해당 id 를 가지고 있는 계정이 없다면 예외를 던진다.
@@ -40,6 +44,7 @@ public class AccountServiceImpl implements AccountService{
         return response.toDto();
     }
 
+    @Transactional
     @Override
     public AccountDto editAccount(Long id, AccountDto account) {
         if(!accountRepository.existsById(id)) throw new UnknownAccountException("계정을 찾을 수 없습니다!", id);
