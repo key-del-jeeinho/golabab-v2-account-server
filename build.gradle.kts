@@ -1,7 +1,6 @@
 plugins {
     id("org.springframework.boot") version "2.6.1"
     id("io.spring.dependency-management") version "1.0.11.RELEASE"
-    //id "org.asciidoctor.convert" version "1.5.9.2";
     id("org.asciidoctor.jvm.convert") version "3.3.2"
     id("java")
     id("groovy")
@@ -38,8 +37,10 @@ dependencies {
     implementation ("org.projectlombok:lombok:1.18.22")
     /// MySQL
     runtimeOnly ("mysql:mysql-connector-java:8.0.25")
+    // JWT
+    implementation ("io.jsonwebtoken:jjwt:0.9.1")
     //Golabab Rosetta Library
-    implementation ("io.github.key-del-jeeinho:golabab-v2-rosetta-lib:1.1.0-RELEASE")
+    implementation ("io.github.key-del-jeeinho:golabab-v2-rosetta-lib:1.2.1-RELEASE")
 
     //Test
 
