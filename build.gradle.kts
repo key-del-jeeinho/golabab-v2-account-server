@@ -39,7 +39,7 @@ dependencies {
     /// MySQL
     runtimeOnly ("mysql:mysql-connector-java:8.0.25")
     //Golabab Rosetta Library
-    implementation ("io.github.key-del-jeeinho:golabab-v2-rosetta-lib:1.1.0-RELEASE")
+    implementation ("io.github.key-del-jeeinho:golabab-v2-rosetta-lib:1.2.0-RELEASE")
 
     //Test
 
