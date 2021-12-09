@@ -1,25 +1,21 @@
 package io.github.key_del_jeeinho.golabab_v2.account_server.domain.authorize.controller;
 
-import io.github.key_del_jeeinho.golabab_v2.account_server.domain.authorize.dto.UnauthorizedAccountDto;
+import io.github.key_del_jeeinho.golabab_v2.account_server.domain.authorize.dto.AuthorizeResultDto;
 import io.github.key_del_jeeinho.golabab_v2.account_server.domain.authorize.service.AuthorizeService;
-import io.github.key_del_jeeinho.golabab_v2.rosetta.authorize.request.GetAuthorizeLinkRequest;
-import io.github.key_del_jeeinho.golabab_v2.rosetta.authorize.response.GetAuthorizeLinkResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
-@RestController
-@RequestMapping("api/v1/authorize-api")
+@Controller
+@RequestMapping("/authorize")
 public class AuthorizeController {
     private final AuthorizeService authorizeService;
 
-    @PostMapping("/authorize-link")
-    public ResponseEntity<GetAuthorizeLinkResponse> getAuthorizeLink(@RequestBody GetAuthorizeLinkRequest request) {
-        UnauthorizedAccountDto account = new UnauthorizedAccountDto(request.email(), request.discordId());
-        String link = authorizeService.generateAuthorizeLink(request.callbackUrl(), account, request.limitMinute());
+    @GetMapping
+    public String authorize(@RequestParam String token) {
+        AuthorizeResultDto result = authorizeService.authorize(token);
 
-        GetAuthorizeLinkResponse response = new GetAuthorizeLinkResponse(link);
-        return ResponseEntity.ok(response);
+        return String.format("redirect:%s?token=%s", result.callbackUrl(), result.token());
     }
 }
