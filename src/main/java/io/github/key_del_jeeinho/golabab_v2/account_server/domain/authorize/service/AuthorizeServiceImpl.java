@@ -1,5 +1,6 @@
 package io.github.key_del_jeeinho.golabab_v2.account_server.domain.authorize.service;
 
+import io.github.key_del_jeeinho.golabab_v2.account_server.domain.authorize.dto.AuthorizeResultDto;
 import io.github.key_del_jeeinho.golabab_v2.account_server.domain.authorize.dto.UnauthorizedAccountDto;
 import io.github.key_del_jeeinho.golabab_v2.account_server.global.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
@@ -25,5 +26,10 @@ public class AuthorizeServiceImpl implements AuthorizeService {
                 .addClaim("account", account)
         .build();
         return String.format("%s:%d/api/v1/authorize-api/authorize?token=%s", address, port, token);
+    }
+
+    @Override
+    public AuthorizeResultDto authorize(String token) {
+        return null;
     }
 }
