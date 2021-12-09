@@ -16,98 +16,134 @@ Golabab V2 의 계정관리를 위한 Restful API 입니다.
 
 API PORT는 8080 입니다.
 
+
 [[account-api]]
+== account-api
 계정관리 기능을 수행하는 api 입니다.
 
-root path : api/v1/account
+root path : api/v1/account-api
 
+=== API 명세
 
+==== add-account
 
-=== add-account
-
-==== CURL
+===== CURL
 include::{snippets}/docs/add-account/curl-request.adoc[]
 
 
-==== Request HTTP
+===== Request HTTP
 include::{snippets}/docs/add-account/http-request.adoc[]
 
 
-==== Response HTTP
+===== Response HTTP
 include::{snippets}/docs/add-account/http-response.adoc[]
 
 
-==== Request Body
+===== Request Body
 include::{snippets}/docs/add-account/request-body.adoc[]
 
 
-==== Request Fields
+===== Request Fields
 include::{snippets}/docs/add-account/request-fields.adoc[]
 
 
-==== Response Body
+===== Response Body
 include::{snippets}/docs/add-account/response-body.adoc[]
 
 
-==== Response Fields
+===== Response Fields
 include::{snippets}/docs/add-account/response-fields.adoc[]
 
 
-=== edit-account
+==== edit-account
 
-==== CURL
+===== CURL
 include::{snippets}/docs/edit-account/curl-request.adoc[]
 
 
-==== Request HTTP
+===== Request HTTP
 include::{snippets}/docs/edit-account/http-request.adoc[]
 
 
-==== Response HTTP
+===== Response HTTP
 include::{snippets}/docs/edit-account/http-response.adoc[]
 
 
-==== Path Parameters
+===== Path Parameters
 include::{snippets}/docs/edit-account/path-parameters.adoc[]
 
 
-==== Request Body
+===== Request Body
 include::{snippets}/docs/edit-account/request-body.adoc[]
 
 
-==== Response Body
+===== Response Body
 include::{snippets}/docs/edit-account/response-body.adoc[]
 
 
-==== Response Fields
+===== Response Fields
 include::{snippets}/docs/edit-account/response-fields.adoc[]
 
 
-=== get-account
+==== get-account
 
-==== CURL
+===== CURL
 include::{snippets}/docs/get-account/curl-request.adoc[]
 
 
-==== Request HTTP
+===== Request HTTP
 include::{snippets}/docs/get-account/http-request.adoc[]
 
 
-==== Response HTTP
+===== Response HTTP
 include::{snippets}/docs/get-account/http-response.adoc[]
 
 
-==== Path Parameters
+===== Path Parameters
 include::{snippets}/docs/get-account/path-parameters.adoc[]
 
 
-==== Request Body
-include::{snippets}/docs/get-account/request-body.adoc[]
-
-
-==== Response Body
+===== Response Body
 include::{snippets}/docs/get-account/response-body.adoc[]
 
 
-==== Response Fields
+===== Response Fields
 include::{snippets}/docs/get-account/response-fields.adoc[]
+
+
+[[authorize-api]]
+== authorize-api
+계정인증 기능을 수행하는 api 입니다.
+
+root path : api/v1/authorize-api
+
+=== API 명세
+
+==== get-authorize-link
+
+===== CURL
+include::{snippets}/docs/get-authorize-link/curl-request.adoc[]
+
+
+===== Request HTTP
+include::{snippets}/docs/get-authorize-link/http-request.adoc[]
+
+
+===== Response HTTP
+include::{snippets}/docs/get-authorize-link/http-response.adoc[]
+
+
+===== Request Body
+include::{snippets}/docs/get-authorize-link/request-body.adoc[]
+
+
+===== Request Fields
+include::{snippets}/docs/get-authorize-link/request-fields.adoc[]
+
+
+===== Response Body
+include::{snippets}/docs/get-authorize-link/response-body.adoc[]
+
+
+===== Response Fields
+include::{snippets}/docs/get-authorize-link/response-fields.adoc[]
