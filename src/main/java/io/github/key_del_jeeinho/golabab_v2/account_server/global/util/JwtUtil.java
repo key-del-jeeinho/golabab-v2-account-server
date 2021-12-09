@@ -17,7 +17,7 @@ public class JwtUtil {
     @Setter
     private static DecoderStrategy decoderStrategy = new DecoderStrategyImpl(); //default strategy
 
-    public static JwtBuilder getInstance(Function<Date, Date> expiration) {
+    public static JwtBuilder getBuilder(Function<Date, Date> expiration) {
         return builderStrategy.getInstance(expiration);
     }
 

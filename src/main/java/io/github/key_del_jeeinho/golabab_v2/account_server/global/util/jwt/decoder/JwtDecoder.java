@@ -1,18 +1,14 @@
 package io.github.key_del_jeeinho.golabab_v2.account_server.global.util.jwt.decoder;
 
-import io.github.key_del_jeeinho.golabab_v2.account_server.global.util.JwtUtil;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
-import lombok.RequiredArgsConstructor;
 
 public class JwtDecoder {
-    private final String token;
     private final String secret;
     private final String issuer;
     private final Claims claims;
 
     public JwtDecoder(String token, String secret, String issuer) {
-        this.token = token;
         this.secret = secret;
         this.issuer = issuer;
         claims = parse(token);
