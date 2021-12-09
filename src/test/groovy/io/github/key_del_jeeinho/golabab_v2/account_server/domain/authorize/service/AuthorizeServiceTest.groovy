@@ -2,6 +2,7 @@ package io.github.key_del_jeeinho.golabab_v2.account_server.domain.authorize.ser
 
 import io.github.key_del_jeeinho.golabab_v2.account_server.domain.authorize.dto.UnauthorizedAccountDto
 import io.github.key_del_jeeinho.golabab_v2.account_server.global.util.JwtUtil
+import io.github.key_del_jeeinho.golabab_v2.account_server.global.util.jwt.builder.JwtBuilder
 import org.springframework.boot.autoconfigure.web.ServerProperties
 import spock.lang.Specification
 
@@ -20,7 +21,7 @@ class AuthorizeServiceTest extends Specification {
      */
     def "AuthorizeService 의 getAuthorizeLink 메서드에 대한 Positive Test"() {
         given:
-        JwtUtil.JwtBuilder JWT빌더 = Mock(JwtUtil.JwtBuilder)
+        JwtBuilder JWT빌더 = Mock(JwtBuilder)
         InetAddress 서버주소_Inet = Mock(InetAddress)
 
         서버주소_Inet.toString() >> 서버주소
