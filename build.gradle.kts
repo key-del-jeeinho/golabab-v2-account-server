@@ -1,7 +1,6 @@
 plugins {
     id("org.springframework.boot") version "2.6.1"
     id("io.spring.dependency-management") version "1.0.11.RELEASE"
-    //id "org.asciidoctor.convert" version "1.5.9.2";
     id("org.asciidoctor.jvm.convert") version "3.3.2"
     id("java")
     id("groovy")
@@ -39,7 +38,7 @@ dependencies {
     /// MySQL
     runtimeOnly ("mysql:mysql-connector-java:8.0.25")
     //Golabab Rosetta Library
-    implementation ("io.github.key-del-jeeinho:golabab-v2-rosetta-lib:1.2.0-RELEASE")
+    implementation ("io.github.key-del-jeeinho:golabab-v2-rosetta-lib:1.2.1-RELEASE")
 
     //Test
 
