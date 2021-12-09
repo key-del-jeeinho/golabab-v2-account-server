@@ -30,7 +30,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureRestDocs
 @AutoConfigureMockMvc
-public class AuthorizeControllerTest {
+public class AuthorizeLinkControllerTest {
     @Autowired
     private AuthorizeService authorizeService;
     @Autowired
