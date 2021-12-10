@@ -12,7 +12,10 @@ import io.github.key_del_jeeinho.golabab_v2.account_server.domain.account.dto.Ac
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 @RequiredArgsConstructor
 @RestController
@@ -22,7 +25,7 @@ public class AccountController {
 
     //throws DuplicateAccountException
     @PostMapping("/account")
-    public ResponseEntity<AddAccountResponse> addAccount(@RequestBody AddAccountRequest request) {
+    public ResponseEntity<AddAccountResponse> addAccount(@Valid @RequestBody AddAccountRequest request) {
         //계정을 추가한다
         //계정을 추가한 후 추가한 계정의 정보를 담은 Dto 를 구한다
         AccountDto data = new AccountDto(-1, request.email(), request.role(), request.discordId());
@@ -43,7 +46,7 @@ public class AccountController {
     }
 
     @PatchMapping("/account/{id}")
-    public ResponseEntity<EditAccountResponse> editAccount(@PathVariable Long id, @RequestBody EditAccountRequest account) {
+    public ResponseEntity<EditAccountResponse> editAccount(@PathVariable Long id, @Valid @RequestBody EditAccountRequest account) {
         //인자로 받은 id와 AccountDto 를 통해 계정을 수정한다.
         AccountDto data = new AccountDto(id, account.email(), account.role(), account.discordId());
         AccountDto result = accountService.editAccount(id, data);

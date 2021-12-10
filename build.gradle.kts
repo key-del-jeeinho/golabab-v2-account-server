@@ -41,7 +41,7 @@ dependencies {
     // JWT
     implementation ("io.jsonwebtoken:jjwt:0.9.1")
     //Golabab Rosetta Library
-    implementation ("io.github.key-del-jeeinho:golabab-v2-rosetta-lib:1.2.1-RELEASE")
+    implementation ("io.github.key-del-jeeinho:golabab-v2-rosetta-lib:1.2.2-RELEASE")
 
     //Test
 
@@ -109,16 +109,14 @@ tasks {
             into("BOOT-INF/classes/static/docs")
         }
     }
-}
 
-tasks.withType<JavaCompile> {
-    options.encoding = "UTF-8"
-}
-
-tasks.withType<Test> {
-    systemProperty("file.encoding", "UTF-8")
-}
-
-tasks.withType<Javadoc>{
-    options.encoding = "UTF-8"
+    withType<JavaCompile> {
+        options.encoding = "UTF-8"
+    }
+    withType<Test> {
+        systemProperty("file.encoding", "UTF-8")
+    }
+    withType<Javadoc>{
+        options.encoding = "UTF-8"
+    }
 }
