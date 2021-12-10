@@ -173,12 +173,15 @@ class AccountServiceTest extends Specification {
     인자로받은 AccountDto 의 정보를 통해 해당 Entity 를 수정한다.
     - id가 일치하는 AccountEntity 가 존재하지 않으면, UnknownAccountException 예외를 던진다.
     - id가 일치하는 AccountEntity 가 존재하면, 인자로 받은 AccountDto 의 정보를 기준으로 해당 Entity 를 수정하여 저장한다.
+    - 만약 이메일이나 아이디가 다른 계정에서 사용되고있을경우, 그에 맞는 DuplicateAccountException 을 반환한다.
     - 이후, 수정된 Entity 를 AccountDto 로 Convert 하여 반환한다.
      */
     def "AccountService 의 editAccount 메서드에 대한 Positive Test"() {
         given:
         AccountDto 수정된_계정 = new AccountDto(계정id, 이메일, 역할, 디스코드id)
         accountRepository = Mock(AccountRepository)
+        1 * accountRepository.getById(계정id)
+                >> AccountEntity.of(수정된_계정)
         1 * accountRepository.save(AccountEntity.of(수정된_계정))
                 >> AccountEntity.of(수정된_계정)
         1 * accountRepository.existsById(계정id) >> true
@@ -227,5 +230,66 @@ class AccountServiceTest extends Specification {
         14806L | "gsm.hs.kr" | Role.OPERATOR | 309542L
         92347L | "ab.c" | Role.DEVELOPER | 495072214L
     }
+    def "AccountService 의 editAccount 메서드에 대한 Negative Test - 디스코드 ID가 중복되었을 경우"() {
+        given:
+        long 기존_계정의_디스코드id = 디스코드id == Long.MAX_VALUE ? 디스코드id -1 : 디스코드id + 1
+        AccountDto 기존_계정 = new AccountDto(계정id, 이메일, 역할, 기존_계정의_디스코드id)
+        AccountDto 수정된_계정 = new AccountDto(계정id, 이메일, 역할, 디스코드id)
+        accountRepository = Mock(AccountRepository)
+        1 * accountRepository.getById(계정id)
+                >> AccountEntity.of(기존_계정)
+        0 * accountRepository.save(AccountEntity.of(수정된_계정)) //오류가 났으므로 Update 하면 안된다.
+                >> AccountEntity.of(수정된_계정)
+        1 * accountRepository.existsById(계정id) >> true
+        1 * accountRepository.existsByDiscordId(디스코드id) >> true
+        accountRepository.existsByEmail(이메일) >> false
 
+        accountService = new AccountServiceImpl(accountRepository)
+
+        when:
+        accountService.editAccount(계정id, 수정된_계정)
+
+        then:
+        def e = thrown(DuplicateAccountException.class)
+        e.getReason() == Reason.DUPLICATE_DISCORD_ID
+
+        where:
+        계정id | 이메일 | 역할 | 디스코드id
+        21659L | "s20072@gsm.hs.kr" | Role.DEVELOPER | 23490234L
+        34651L | "golabab@gmail.com" | Role.ADMIN | 4231444L
+        20341L | "@gsm.hs.kr" | Role.USER | 176390L
+        14806L | "gsm.hs.kr" | Role.OPERATOR | 309542L
+        92347L | "ab.c" | Role.DEVELOPER | 495072214L
+    }
+    def "AccountService 의 editAccount 메서드에 대한 Negative Test - 이메일이 중복되었을 경우"() {
+        given:
+        String 기존_계정의_이메일 = 이메일 + "a"
+        AccountDto 기존_계정 = new AccountDto(계정id, 기존_계정의_이메일, 역할, 디스코드id)
+        AccountDto 수정된_계정 = new AccountDto(계정id, 이메일, 역할, 디스코드id)
+        accountRepository = Mock(AccountRepository)
+        1 * accountRepository.getById(계정id)
+                >> AccountEntity.of(기존_계정)
+        0 * accountRepository.save(AccountEntity.of(수정된_계정)) //오류가 났으므로 Update 하면 안된다.
+                >> AccountEntity.of(수정된_계정)
+        1 * accountRepository.existsById(계정id) >> true
+        accountRepository.existsByDiscordId(디스코드id) >> false
+        1 * accountRepository.existsByEmail(이메일) >> true
+
+        accountService = new AccountServiceImpl(accountRepository)
+
+        when:
+        accountService.editAccount(계정id, 수정된_계정)
+
+        then:
+        def e = thrown(DuplicateAccountException.class)
+        e.getReason() == Reason.DUPLICATE_EMAIL
+
+        where:
+        계정id | 이메일 | 역할 | 디스코드id
+        21659L | "s20072@gsm.hs.kr" | Role.DEVELOPER | 23490234L
+        34651L | "golabab@gmail.com" | Role.ADMIN | 4231444L
+        20341L | "@gsm.hs.kr" | Role.USER | 176390L
+        14806L | "gsm.hs.kr" | Role.OPERATOR | 309542L
+        92347L | "ab.c" | Role.DEVELOPER | 495072214L
+    }
 }
