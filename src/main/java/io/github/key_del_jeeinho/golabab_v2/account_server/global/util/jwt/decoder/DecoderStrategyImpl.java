@@ -8,7 +8,7 @@ import javax.annotation.PostConstruct;
 
 @Component //static 변수들을 spring boot property 로 초기화 하기 위해 사용한다.
 public class DecoderStrategyImpl implements DecoderStrategy {
-    private static String secret;
+    private static String secret = "secret";//default value
 
     @Autowired
     private JwtProperty jwtProperty;
