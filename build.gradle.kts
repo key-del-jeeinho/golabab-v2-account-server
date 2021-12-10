@@ -30,6 +30,7 @@ dependencies {
     implementation ("org.springframework.boot:spring-boot-starter-validation:2.5.6")
     implementation ("org.springframework.boot:spring-boot-starter-web:2.5.6")
     annotationProcessor ("org.springframework.boot:spring-boot-configuration-processor:2.5.6")
+    implementation ("org.springframework.boot:spring-boot-starter-thymeleaf")
     /// Javassist
     implementation ("javassist:javassist:3.3")
     /// Lombok
