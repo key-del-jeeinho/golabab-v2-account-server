@@ -38,7 +38,7 @@ public class JwtBuilder {
                 .setHeaderParam(Header.TYPE, Header.JWT_TYPE)
                 .setIssuer(issuer)
                 .setIssuedAt(now)
-                .setExpiration(new Date(now.getTime() + expiration.getTime()))
+                .setExpiration(new Date(expiration.getTime()))
                 .setClaims(claims)
                 .signWith(SignatureAlgorithm.HS256, secret)
                 .compact();
