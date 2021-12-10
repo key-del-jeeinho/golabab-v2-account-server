@@ -55,7 +55,6 @@ public class AccountController {
     @ExceptionHandler(DuplicateAccountException.class)
     public ResponseEntity<String> handleDuplicateAccountException(DuplicateAccountException e) {
         //중복된 계정이 존재할 경우 에러를 반환한다.
-        System.out.println(e.getMessage());
         return ResponseEntity.badRequest()
                 .header(HttpHeaders.CONTENT_TYPE, "application/json;charset=UTF-8")
                 .body(e.getMessage());
