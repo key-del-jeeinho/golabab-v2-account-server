@@ -63,7 +63,6 @@ dependencies {
     asciidoctorExtensions("org.springframework.restdocs:spring-restdocs-asciidoctor:2.0.5.RELEASE")
 }
 
-
 tasks {
     val snippetsDir = file("$buildDir/generated-snippets")
 
@@ -110,4 +109,16 @@ tasks {
             into("BOOT-INF/classes/static/docs")
         }
     }
+}
+
+tasks.withType<JavaCompile> {
+    options.encoding = "UTF-8"
+}
+
+tasks.withType<Test> {
+    systemProperty("file.encoding", "UTF-8")
+}
+
+tasks.withType<Javadoc>{
+    options.encoding = "UTF-8"
 }

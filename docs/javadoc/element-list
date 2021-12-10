@@ -1,0 +1,16 @@
+io.github.key_del_jeeinho.golabab_v2.account_server
+io.github.key_del_jeeinho.golabab_v2.account_server.domain.account.controller
+io.github.key_del_jeeinho.golabab_v2.account_server.domain.account.dto
+io.github.key_del_jeeinho.golabab_v2.account_server.domain.account.entity
+io.github.key_del_jeeinho.golabab_v2.account_server.domain.account.exception
+io.github.key_del_jeeinho.golabab_v2.account_server.domain.account.repository
+io.github.key_del_jeeinho.golabab_v2.account_server.domain.account.service
+io.github.key_del_jeeinho.golabab_v2.account_server.domain.authorize.advice
+io.github.key_del_jeeinho.golabab_v2.account_server.domain.authorize.controller
+io.github.key_del_jeeinho.golabab_v2.account_server.domain.authorize.dto
+io.github.key_del_jeeinho.golabab_v2.account_server.domain.authorize.service
+io.github.key_del_jeeinho.golabab_v2.account_server.global.config
+io.github.key_del_jeeinho.golabab_v2.account_server.global.property
+io.github.key_del_jeeinho.golabab_v2.account_server.global.util
+io.github.key_del_jeeinho.golabab_v2.account_server.global.util.jwt.builder
+io.github.key_del_jeeinho.golabab_v2.account_server.global.util.jwt.decoder
