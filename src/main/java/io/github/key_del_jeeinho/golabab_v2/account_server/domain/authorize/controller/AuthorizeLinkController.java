@@ -8,6 +8,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("api/v1/authorize-api")
@@ -15,7 +17,7 @@ public class AuthorizeLinkController {
     private final AuthorizeService authorizeService;
 
     @PostMapping("/authorize-link")
-    public ResponseEntity<GetAuthorizeLinkResponse> getAuthorizeLink(@RequestBody GetAuthorizeLinkRequest request) {
+    public ResponseEntity<GetAuthorizeLinkResponse> getAuthorizeLink(@Valid  @RequestBody GetAuthorizeLinkRequest request) {
         UnauthorizedAccountDto account = new UnauthorizedAccountDto(request.email(), request.discordId());
         String link = authorizeService.generateAuthorizeLink(request.callbackUrl(), account, request.limitMinute());
 
