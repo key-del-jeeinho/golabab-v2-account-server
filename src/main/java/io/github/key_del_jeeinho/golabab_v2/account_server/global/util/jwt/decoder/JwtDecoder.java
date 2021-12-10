@@ -3,6 +3,8 @@ package io.github.key_del_jeeinho.golabab_v2.account_server.global.util.jwt.deco
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 
+import java.util.Objects;
+
 public class JwtDecoder {
     private final String secret;
     private final String issuer;
@@ -22,7 +24,7 @@ public class JwtDecoder {
                 .parseClaimsJws(token)
                 .getBody();
 
-        if(!claims.getIssuer().equals(issuer)) throw new IllegalArgumentException("invalid issuer");
+        if(!Objects.equals(claims.getIssuer(), issuer)) throw new IllegalArgumentException("invalid issuer");
 
         return claims;
     }
