@@ -26,7 +26,7 @@ public class AuthorizeServiceImpl implements AuthorizeService {
                 .addClaim("account.discordId", account.discordId())
                 .addClaim("account.email", account.expectedEmail())
         .build();
-        return String.format("%s:%d/api/v1/authorize-api/authorize?token=%s", address, port, token);
+        return String.format("%s:%d/authorize?token=%s", address, port, token);
     }
 
     @Override
